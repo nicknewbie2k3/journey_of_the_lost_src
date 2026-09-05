@@ -1,6 +1,8 @@
 import pyray as rl
-from assist.audioAssist import convert_all_progress
-from scenes.intro import IntroScene
+
+from core.assist.audioAssist import convert_all_progress
+from core.assist.scaling import scale_f, scale_i
+from core.scenes.intro import IntroScene
 
 
 BAR_WIDTH = 400
@@ -32,19 +34,21 @@ class LoadingScene:
         screen_w = rl.get_screen_width()
         screen_h = rl.get_screen_height()
 
-        bar_x = (screen_w - BAR_WIDTH) // 2
-        bar_y = screen_h // 2 - BAR_HEIGHT // 2
+        bar_w = scale_i(BAR_WIDTH)
+        bar_h = scale_i(BAR_HEIGHT)
+        bar_x = (screen_w - bar_w) // 2
+        bar_y = screen_h // 2 - bar_h // 2
 
         rl.draw_rectangle_lines_ex(
-            rl.Rectangle(bar_x - 1, bar_y - 1, BAR_WIDTH + 2, BAR_HEIGHT + 2),
+            rl.Rectangle(bar_x - 1, bar_y - 1, bar_w + 2, bar_h + 2),
             1,
             rl.WHITE,
         )
 
         progress = self.current / max(self.total, 1)
-        fill_w = int(BAR_WIDTH * progress)
+        fill_w = int(bar_w * progress)
         if fill_w > 0:
-            rl.draw_rectangle(bar_x, bar_y, fill_w, BAR_HEIGHT, rl.SKYBLUE)
+            rl.draw_rectangle(bar_x, bar_y, fill_w, bar_h, rl.SKYBLUE)
 
         if self.total > 0:
             pct = int(progress * 100)
@@ -52,22 +56,22 @@ class LoadingScene:
         else:
             pct_text = "100%"
 
-        pct_size = 20
+        pct_size = scale_i(20)
         pct_w = rl.measure_text(pct_text, pct_size)
         rl.draw_text(
             pct_text,
             (screen_w - pct_w) // 2,
-            bar_y + BAR_HEIGHT + 10,
+            int(bar_y + bar_h + scale_f(10)),
             pct_size,
             rl.WHITE,
         )
 
-        status_size = 16
+        status_size = scale_i(16)
         status_w = rl.measure_text(self.status, status_size)
         rl.draw_text(
             self.status,
             (screen_w - status_w) // 2,
-            bar_y - 30,
+            int(bar_y - scale_f(30)),
             status_size,
             rl.GRAY,
         )

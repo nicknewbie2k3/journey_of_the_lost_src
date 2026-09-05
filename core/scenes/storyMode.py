@@ -2,10 +2,8 @@ import json
 import os
 import glob
 
-from scenes.chapter.first.tutorial.tutorial import TutorialScene
-
-CONFIG_PATH = os.path.join("core", "config", "config.json")
-LEVEL_DIR = os.path.join("assets", "chapter", "level")
+from core.assist.paths import CONFIG_PATH, LEVEL_DIR
+from core.scenes.chapter.first.tutorial.tutorial import TutorialScene
 
 TYPE_TO_CLASS = {
     "tutorial": TutorialScene,

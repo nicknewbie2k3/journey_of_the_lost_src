@@ -1,4 +1,17 @@
+import os
+
 import pyray as rl
+
+from core.assist.paths import AUDIO_DIR
+from core.assist.scaling import scale_f, scale_i
+
+BUTTON_W = 250
+BUTTON_H = 40
+START_Y = 170
+SPACING = 60
+TITLE_SIZE = 60
+TITLE_Y = 60
+FONT_SIZE = 30
 
 
 class MenuScene:
@@ -14,7 +27,7 @@ class MenuScene:
             {"label": "Quit", "enabled": True},
         ]
 
-        self.music = rl.load_music_stream("assets/audio/MenuBGM.wav")
+        self.music = rl.load_music_stream(os.path.join(AUDIO_DIR, "MenuBGM.wav"))
         rl.set_music_volume(self.music, 0.5)
         rl.play_music_stream(self.music)
 
@@ -26,12 +39,10 @@ class MenuScene:
 
     def _get_button_bounds(self, index):
         screen_width = rl.get_screen_width()
-        button_width = 250
-        button_height = 40
-        start_y = 170
-        spacing = 60
+        button_width = scale_i(BUTTON_W)
+        button_height = scale_i(BUTTON_H)
         x = (screen_width - button_width) // 2
-        y = start_y + index * spacing
+        y = scale_i(START_Y) + index * scale_i(SPACING)
         return rl.Rectangle(x, y, button_width, button_height)
 
     def update(self):
@@ -65,21 +76,22 @@ class MenuScene:
                 if label == "Quit":
                     self.next_scene = None
                 elif label == "Story Mode":
-                    from scenes.storyMode import StoryModeScene
+                    from core.scenes.storyMode import StoryModeScene
                     self.next_scene = StoryModeScene()
                 elif label == "Settings":
-                    self.next_scene = None
+                    from core.scenes.settings import SettingsScene
+                    self.next_scene = SettingsScene()
 
     def draw(self):
         title = "HESTIE"
-        title_size = 60
+        title_size = scale_i(TITLE_SIZE)
         screen_width = rl.get_screen_width()
         title_w = rl.measure_text(title, title_size)
-        rl.draw_text(title, (screen_width - title_w) // 2, 60, title_size, rl.WHITE)
+        rl.draw_text(title, (screen_width - title_w) // 2, scale_i(TITLE_Y), title_size, rl.WHITE)
 
         for i, btn in enumerate(self.buttons):
             bounds = self._get_button_bounds(i)
-            font_size = 30
+            font_size = scale_i(FONT_SIZE)
 
             if not btn["enabled"]:
                 color = rl.DARKGRAY
@@ -93,7 +105,7 @@ class MenuScene:
             ry = int(bounds.y + (bounds.height - font_size) / 2)
 
             if i == self.selected_index and btn["enabled"]:
-                rl.draw_text(">", rx - 20, ry, font_size, rl.YELLOW)
+                rl.draw_text(">", int(rx - scale_f(20)), ry, font_size, rl.YELLOW)
 
             rl.draw_text(btn["label"], rx, ry, font_size, color)
 

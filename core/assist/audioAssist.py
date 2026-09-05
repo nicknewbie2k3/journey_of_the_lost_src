@@ -3,7 +3,7 @@ import wave
 
 import miniaudio
 
-AUDIO_DIR = "assets/audio"
+from core.assist.paths import AUDIO_DIR
 
 
 def convert_all_progress():

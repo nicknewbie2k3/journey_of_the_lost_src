@@ -1,0 +1,9 @@
+{
+  "move_left": 74,
+  "move_right": 76,
+  "soft_drop": 75,
+  "hard_drop": 32,
+  "rotate_cw": 87,
+  "rotate_ccw": 81,
+  "hold": 68
+}

@@ -1,5 +1,7 @@
 import pyray as rl
-from scenes.menu import MenuScene
+
+from core.scenes.menu import MenuScene
+from core.assist.scaling import scale_i
 
 WAIT_DURATION = 2.0
 FADE_IN_DURATION = 0.5
@@ -53,7 +55,7 @@ class IntroScene:
             return
 
         text = "Hestie presents"
-        font_size = 40
+        font_size = scale_i(40)
         text_width = rl.measure_text(text, font_size)
         screen_width = rl.get_screen_width()
         screen_height = rl.get_screen_height()

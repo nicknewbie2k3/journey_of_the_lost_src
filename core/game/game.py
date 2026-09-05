@@ -1,11 +1,13 @@
 import pyray as rl
-from scenes.loading import LoadingScene
+
+from core.scenes.loading import LoadingScene
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 450
 
 
 def main():
+    rl.set_config_flags(rl.FLAG_WINDOW_RESIZABLE)
     rl.init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Hestie")
     rl.init_audio_device()
     rl.set_target_fps(60)
